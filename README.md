@@ -1,75 +1,120 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Concurrent FIFO Audio Visualizer Queue Engine
 
-Currently, two official plugins are available:
+A React and TypeScript application demonstrating FIFO
+audio task processing, cancellation, Web Audio API
+playback, and real-time Canvas visualization.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Technology Stack
 
-## React Compiler
+- React
+- TypeScript
+- Vite
+- Web Audio API
+- HTML Canvas API
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Key Features
 
-## Expanding the ESLint configuration
+### 1. FIFO Audio Queue
+- Processes audio tasks in first-in, first-out order.
+- Downloads audio files using fetch().
+- Decodes audio using AudioContext.decodeAudioData().
+- Tracks pending and active tasks.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 2. Cancellation
+- Uses AbortController to cancel active downloads.
+- Supports cancellation of pending tasks.
+- Prevents stale playback requests after Stop.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### 3. Audio Playback
+- Uses AudioBufferSourceNode for playback.
+- Provides Play and Stop controls.
+- Disconnects audio sources after playback.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### 4. Audio Visualization
+- Uses AnalyserNode with fftSize = 512.
+- Displays frequency data on HTML Canvas.
+- Uses requestAnimationFrame for rendering.
+- Avoids React state updates inside the animation loop.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### 5. Resource Cleanup
+- Stops active audio playback.
+- Cancels outstanding queue tasks.
+- Cancels animation frames.
+- Closes AudioContext during component cleanup.
 
+## Installation
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## Run Development Server
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```bash
+npm run dev
 ```
+
+Open the local URL displayed by Vite.
+
+## Production Build
+
+```bash
+npm run build
+```
+
+## Audio Test Files
+
+The test utilities reference the following local files:
+
+- public/audio/track1.mp3
+- public/audio/track2.mp3
+- public/audio/track3.mp3
+
+These audio files are not included in the public repository.
+
+To run the FIFO and cancellation tests, create the
+public/audio/ directory and add three valid MP3 files
+using the filenames above.
+
+Use audio recordings you own or have permission to use.
+
+## Testing
+
+The application includes:
+
+- FIFO Queue Test
+- Pending Task Cancellation Test
+- Play/Stop Interaction Test
+
+Open the browser Developer Tools Console to inspect
+test results.
+
+## Project Structure
+
+- src/types/ - TypeScript contracts
+- src/engine/ - Queue, playback, and visualizer logic
+- src/tests/ - Audio queue test utilities
+- src/App.tsx - React application interface
+
+## Documentation
+
+- project-rules.md
+- TASK_DECOMPOSITION.md
+- AI_FAILURE_AUDIT.md
+
+## AI-Assisted Development Audit
+
+The project documents three implementation issues
+identified during AI-assisted development:
+
+1. Incorrect FIFO processing trigger placement.
+2. Missing stale-request cancellation protection.
+3. Incomplete audio resource cleanup.
+
+See AI_FAILURE_AUDIT.md for details.
+
+## Author
+
+University Web Application Development Coursework
+Lab 2 - Homework 2
